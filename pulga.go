@@ -75,12 +75,17 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 }
 
 func (h *Handler) validateRequest(req *http.Request) (url.Values, bool) {
+  // If it's not the same HTTP verb, return as a invalid request without params.
   if !h.regex.MatchString(req.URL.Path) || h.method != req.Method {
     return nil, false
   }
 
-  matches := h.regex.FindStringSubmatch(req.URL.Path)[1:]
+  // If is the same static path, return as a valid request without params.
+  if h.path == req.URL.Path {
+    return nil, true
+  }
 
+  matches := h.regex.FindStringSubmatch(req.URL.Path)[1:]
   if len(matches) == 0 {
     return nil, false
   }

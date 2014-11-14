@@ -12,10 +12,24 @@ var basicHandler = func(w http.ResponseWriter, r *http.Request) {
   w.WriteHeader(http.StatusOK)
 }
 
+func TestRouteRouteWithoutParams(t *testing.T) {
+  router := &Router{}
+  router.Get("/about/pulga", basicHandler)
+
+  r, _ := http.NewRequest("GET", "/about/pulga", nil)
+  w := httptest.NewRecorder()
+  router.ServeHTTP(w, r)
+
+  if w.Body.String() != "Hi. Pulga here!" {
+    t.Errorf("The body must be [Hi. Pulga here!]. Got [%s]", w.Body)
+  }
+}
+
 func TestRouteWithParams(t *testing.T) {
   router := &Router{}
   router.Get("/", basicHandler)
   router.Get("/posts/:category/:slug", basicHandler)
+  router.Get("/about/pulga", basicHandler)
 
   r, _ := http.NewRequest("GET", "/posts/golang/pulga-router?repo=github", nil)
   w := httptest.NewRecorder()
