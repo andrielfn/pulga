@@ -82,7 +82,7 @@ func (h *Handler) validateRequest(req *http.Request) (url.Values, bool) {
   matches := h.regex.FindStringSubmatch(req.URL.Path)[1:]
 
   if len(matches) == 0 {
-    return nil, true
+    return nil, false
   }
 
   params := make(url.Values)

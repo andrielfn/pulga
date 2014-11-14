@@ -14,6 +14,7 @@ var basicHandler = func(w http.ResponseWriter, r *http.Request) {
 
 func TestRouteWithParams(t *testing.T) {
   router := &Router{}
+  router.Get("/", basicHandler)
   router.Get("/posts/:category/:slug", basicHandler)
 
   r, _ := http.NewRequest("GET", "/posts/golang/pulga-router?repo=github", nil)
